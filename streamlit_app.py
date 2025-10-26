@@ -4,9 +4,7 @@ import requests
 #import column function to pull specific column from dataframe
 from snowflake.snowpark.functions import col
 
-#call API
-smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-st.text(smoothiefroot_response.json())
+
 
 # Write directly to the app
 st.title(f"Customize Your Smoothie! :cup_with_straw:")
@@ -44,4 +42,8 @@ if len(ingredients_list)>0:
     if time_to_insert:
         session.sql(my_insert_statement).collect()
         st.success('Your Smoothie is ordered, '+name_on_order+'!',icon="✅")
-    
+
+
+#call SmoothieFroot API
+smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+sf_df=st.dataframe(data=smoothiefroot_response.json(),use_container_width=True)
