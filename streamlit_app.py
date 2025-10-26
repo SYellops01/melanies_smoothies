@@ -27,6 +27,9 @@ if len(ingredients_list)>0:
     ingredients_string=''
     for fruits_chosen in ingredients_list:
         ingredients_string +=fruits_chosen + ', '
+        #pull nutritional information for each fruit chosen
+        smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+        sf_df=st.dataframe(data=smoothiefroot_response.json(),use_container_width=True)
     ingredients_string=ingredients_string[:len(ingredients_string)-2]
     
     #st.write(ingredients_string)
@@ -44,6 +47,4 @@ if len(ingredients_list)>0:
         st.success('Your Smoothie is ordered, '+name_on_order+'!',icon="✅")
 
 
-#call SmoothieFroot API
-smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-sf_df=st.dataframe(data=smoothiefroot_response.json(),use_container_width=True)
+
