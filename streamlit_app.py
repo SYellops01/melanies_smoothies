@@ -1,6 +1,5 @@
 # Import python packages
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 #import column function to pull specific column from dataframe
 from snowflake.snowpark.functions import col
 
@@ -14,7 +13,8 @@ st.write(
 name_on_order=st.text_input('Please enter your name for this order: ')
 
 #Set session and dataframe to pull fruit name from table in database
-session=get_active_session()
+cnx=st.connection("snowflake")
+session=cnx.session()
 my_dataframe=session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 
 #create multi-select button to choose ingredients.Impose max 5 selections on user
