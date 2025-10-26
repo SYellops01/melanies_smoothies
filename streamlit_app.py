@@ -19,10 +19,8 @@ name_on_order=st.text_input('Please enter your name for this order: ')
 #Set session and dataframe to pull fruit name from table in database
 cnx=st.connection("snowflake")
 session=cnx.session()
-my_dataframe=session.table("smoothies.public.fruit_options").select(col('SEARCH_ON'))
+my_dataframe=session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 pd_df=my_dataframe.to_pandas()
-st.dataframe(pd_df)
-st.stop()
 
 #create multi-select button to choose ingredients.Impose max 5 selections on user
 ingredients_list=st.multiselect("Choose up to 5 ingredients: ", my_dataframe, max_selections=5)
@@ -31,9 +29,13 @@ if len(ingredients_list)>0:
     ingredients_string=''
     for fruits_chosen in ingredients_list:
         ingredients_string +=fruits_chosen + ', '
+        #add search on for search, actual fruit for name
+        search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
+        st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
+        
         #pull nutritional information for each fruit chosen
         st.subheader(fruits_chosen+' Nutrition Information')
-        smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/"+fruits_chosen)
+        smoothiefroot_response=requests.get("https://my.smoothiefroot.com/api/fruit/"+search_on)
         sf_df=st.dataframe(data=smoothiefroot_response.json(),use_container_width=True)
     ingredients_string=ingredients_string[:len(ingredients_string)-2]
     
