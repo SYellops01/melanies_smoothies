@@ -31,7 +31,7 @@ if len(ingredients_list)>0:
         ingredients_string +=fruits_chosen + ', '
         #add search on for search, actual fruit for name
         search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruits_chosen, 'SEARCH_ON'].iloc[0]
-        st.write('The search value for ', fruits_chosen,' is ', search_on, '.')
+        #st.write('The search value for ', fruits_chosen,' is ', search_on, '.')
         
         #pull nutritional information for each fruit chosen
         st.subheader(fruits_chosen+' Nutrition Information')
