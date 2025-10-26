@@ -1,5 +1,6 @@
 # Import python packages
 import streamlit as st
+import pandas as pd
 import requests
 #import column function to pull specific column from dataframe
 from snowflake.snowpark.functions import col
@@ -19,6 +20,9 @@ name_on_order=st.text_input('Please enter your name for this order: ')
 cnx=st.connection("snowflake")
 session=cnx.session()
 my_dataframe=session.table("smoothies.public.fruit_options").select(col('SEARCH_ON'))
+pd_df=my_dataframe.to_pandas()
+st.dataframe(pd_df)
+st.stop()
 
 #create multi-select button to choose ingredients.Impose max 5 selections on user
 ingredients_list=st.multiselect("Choose up to 5 ingredients: ", my_dataframe, max_selections=5)
